@@ -1,0 +1,31 @@
+# Apache (večina slovenskih gostiteljev). Na Nginx te datoteke ne upošteva.
+
+ErrorDocument 404 /404.html
+
+# Vsilite HTTPS (odkomentirajte, ko je SSL certifikat aktiven)
+# RewriteEngine On
+# RewriteCond %{HTTPS} off
+# RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Varnostne glave
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set Permissions-Policy "geolocation=(), camera=(), microphone=()"
+</IfModule>
+
+# Predpomnjenje statičnih datotek
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css "access plus 1 month"
+  ExpiresByType application/javascript "access plus 1 month"
+  ExpiresByType image/webp "access plus 6 months"
+  ExpiresByType image/svg+xml "access plus 6 months"
+  ExpiresByType image/jpeg "access plus 6 months"
+</IfModule>
+
+# Stiskanje
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript image/svg+xml application/xml text/plain
+</IfModule>
